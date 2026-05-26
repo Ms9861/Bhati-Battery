@@ -194,7 +194,12 @@ const scriptURL = 'https://script.google.com/macros/s/AKfycbx6tWFZfpTJ33GGFLXd1y
 const form = document.getElementById('registrationForm');
 
 form.addEventListener('submit', async (e) => {
+
   e.preventDefault();
+
+  const status = document.getElementById('status');
+
+  status.innerHTML = 'Submitting...';
 
   const data = {
     customerName: document.getElementById('customerName').value,
@@ -205,22 +210,29 @@ form.addEventListener('submit', async (e) => {
   };
 
   try {
+
     const response = await fetch(scriptURL, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data)
-});
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(data)
+    });
+
     const result = await response.json();
 
-    document.getElementById('status').innerHTML = result.message;
+    status.innerHTML = result.message;
 
     form.reset();
 
-  } catch (error) {
-    document.getElementById('status').innerHTML = 'Error submitting form';
+  } catch(error) {
+
+    console.log(error);
+
+    status.innerHTML = 'Connection Failed';
   }
+
 });
 
 </script>
