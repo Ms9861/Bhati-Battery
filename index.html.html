@@ -1,5 +1,174 @@
-<!DOCTYPE html>
-      <label>Amount</label>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BHATI BATTERY Registration</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
+      padding: 20px;
+          }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255,255,255,0.96);
+      border-radius: 28px;
+      padding: 40px 32px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+      border: 1px solid rgba(37,99,235,0.12);
+    }
+
+    .logo {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(37,99,235,0.30);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 34px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #2563eb, #1d4ed8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+         .subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      font-size: 15px;
+      transition: 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 10px 20px rgba(37,99,235,0.25);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    #status {
+      margin-top: 18px;
+      text-align: center;
+      font-weight: 500;
+      color: #1d4ed8;
+    }
+        .footer {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+      <body>
+
+<div class="container">
+
+  <div class="logo">
+    <svg width="52" height="52" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="18" width="40" height="28" rx="4" fill="white"/>
+      <rect x="50" y="26" width="4" height="12" rx="1" fill="white"/>
+      <path d="M30 22L22 34H30L26 42L40 28H32L36 22H30Z" fill="#2563EB"/>
+    </svg>
+  </div>
+
+  <h1>BHATI BATTERY</h1>
+
+  <p class="subtitle">Battery Registration Details</p>
+
+  <form id="registrationForm">
+
+    <div class="form-group">
+      <label>Customer Name</label>
+      <input type="text" id="customerName" required minlength="3" placeholder="Enter customer name">
+    </div>
+
+    <div class="form-group">
+      <label>Battery Model</label>
+      <input type="text" id="batteryModel" required placeholder="Enter battery model">
+    </div>
+
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input type="tel" id="mobile" required pattern="[0-9]{10}" maxlength="10" placeholder="Enter mobile number">
+    </div>
+
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" id="date" required>
+    </div>
+
+    <div class="form-group">
+          <label>Amount</label>
       <input type="number" id="amount" required min="1" placeholder="Enter amount">
     </div>
 
@@ -18,8 +187,7 @@
 <script>
 
 const scriptURL = 'https://script.google.com/macros/s/AKfycbzijd1IVZ8O6LMvk4un5ZbzgYKkFrT51HBo_tqfo7KCzknSZ-HU8XnMx-iK0JtMdBxj/exec';
-
-const form = document.getElementById('registrationForm');
+      const form = document.getElementById('registrationForm');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -37,8 +205,7 @@ form.addEventListener('submit', async (e) => {
       method: 'POST',
       body: JSON.stringify(data)
     });
-
-    const result = await response.json();
+const result = await response.json();
 
     document.getElementById('status').innerHTML = result.message;
 
