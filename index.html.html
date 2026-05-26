@@ -1,231 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BHATI BATTERY Registration</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #dbeafe, #eff6ff, #ffffff);
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 520px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 28px;
-      padding: 40px 32px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(255, 193, 7, 0.15);
-      animation: fadeIn 0.8s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .logo {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 34px;
-      font-weight: 700;
-      box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 34px;
-      font-weight: 700;
-      background: linear-gradient(90deg, #2563eb, #1d4ed8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #6b7280;
-      margin-bottom: 30px;
-      font-size: 15px;
-    }
-
-    .form-group {
-      margin-bottom: 22px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #374151;
-      font-weight: 500;
-      font-size: 14px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
-      background: #fffdf8;
-      font-size: 15px;
-      transition: 0.3s ease;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
-      background: white;
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s ease;
-      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
-    }
-
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 24px rgba(37, 99, 235, 0.35);
-    }
-
-    .footer-text {
-      text-align: center;
-      margin-top: 20px;
-      color: #9ca3af;
-      font-size: 13px;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 30px 22px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      .logo {
-        width: 75px;
-        height: 75px;
-        font-size: 28px;
-      }
-    }
-
-    @media (max-width: 400px) {
-      .container {
-        padding: 24px 18px;
-      }
-
-      h1 {
-        font-size: 24px;
-      }
-
-      input {
-        padding: 12px 14px;
-      }
-
-      .submit-btn {
-        padding: 13px;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-
-    <div class="logo">
-      <svg width="52" height="52" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="10" y="18" width="40" height="28" rx="4" fill="white"/>
-        <rect x="50" y="26" width="4" height="12" rx="1" fill="white"/>
-        <path d="M30 22L22 34H30L26 42L40 28H32L36 22H30Z" fill="#F59E0B"/>
-      </svg>
+      <label>Amount</label>
+      <input type="number" id="amount" required min="1" placeholder="Enter amount">
     </div>
 
-    <h1>BHATI BATTERY</h1>
+    <button type="submit" class="submit-btn">Submit Registration</button>
 
-    <p class="subtitle">Registration Details</p>
+    <div id="status"></div>
 
-    <form id="registrationForm">
+  </form>
 
-      <div class="form-group">
-        <label>Customer Name</label>
-        <input type="text" placeholder="Enter customer name" required minlength="3">
-      </div>
-
-      <div class="form-group">
-        <label>Battery Model</label>
-        <input type="text" placeholder="Enter battery model" required minlength="2">
-      </div>
-
-      <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="tel" placeholder="Enter mobile number" pattern="[0-9]{10}" maxlength="10" required>
-      </div>
-
-      <div class="form-group">
-        <label>Date</label>
-        <input type="date" required>
-      </div>
-
-      <div class="form-group">
-        <label>Amount</label>
-        <input type="number" placeholder="Enter amount" min="1" required>
-      </div>
-
-      <button type="submit" class="submit-btn">
-        Submit Registration
-      </button>
-
-    </form>
-
-    
-
-    <div class="footer-text">
-      © 2026 BHATI BATTERY • 
-    </div>
-
+  <div class="footer">
+    © 2026 BHATI BATTERY • Professional Registration System
   </div>
+
+</div>
+
+<script>
+
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzijd1IVZ8O6LMvk4un5ZbzgYKkFrT51HBo_tqfo7KCzknSZ-HU8XnMx-iK0JtMdBxj/exec';
+
+const form = document.getElementById('registrationForm');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const data = {
+    customerName: document.getElementById('customerName').value,
+    batteryModel: document.getElementById('batteryModel').value,
+    mobile: document.getElementById('mobile').value,
+    date: document.getElementById('date').value,
+    amount: document.getElementById('amount').value
+  };
+
+  try {
+    const response = await fetch(scriptURL, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    document.getElementById('status').innerHTML = result.message;
+
+    form.reset();
+
+  } catch (error) {
+    document.getElementById('status').innerHTML = 'Error submitting form';
+  }
+});
+
+</script>
 
 </body>
 </html>
