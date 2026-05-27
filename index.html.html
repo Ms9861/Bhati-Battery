@@ -361,11 +361,11 @@
         <input type="text" id="searchInput" placeholder="Search customer, mobile or model..." onkeyup="searchTable()">
 
         <select id="sortSelect" onchange="sortTable()">
-          <option value="default">Sort Data</option>
-          <option value="name">Customer Name</option>
-          <option value="amount">Amount</option>
-        </select>
-      </div>
+  <option value="default">Sort Data</option>
+  <option value="name">Customer Name</option>
+  <option value="amount">Amount</option>
+  <option value="mobile">Mobile Number</option>
+</select>
 
       <div class="table-container">
         <table id="dataTable">
@@ -502,12 +502,30 @@ function sortTable() {
 
   rows.sort((a, b) => {
 
+    // Sort by Customer Name
     if(sortValue === 'name') {
-      return a.cells[0].innerText.localeCompare(b.cells[0].innerText);
+
+      return a.cells[0].innerText
+        .localeCompare(b.cells[0].innerText);
     }
 
+    // Sort by Amount
     if(sortValue === 'amount') {
-      return parseInt(a.cells[4].innerText.replace('₹','')) - parseInt(b.cells[4].innerText.replace('₹',''));
+
+      return parseInt(
+        a.cells[4].innerText.replace('₹','')
+      ) -
+
+      parseInt(
+        b.cells[4].innerText.replace('₹','')
+      );
+    }
+
+    // Sort by Mobile Number
+    if(sortValue === 'mobile') {
+
+      return parseInt(a.cells[2].innerText) -
+             parseInt(b.cells[2].innerText);
     }
 
     return 0;
