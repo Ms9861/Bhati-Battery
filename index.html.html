@@ -484,6 +484,18 @@ async function loadData() {
     alert('Unable To Load Customer Records');
   }
 }
+
+    document.getElementById('totalCustomers').innerHTML = data.length;
+
+    document.getElementById('totalAmount').innerHTML = '₹' + totalAmount;
+
+  } catch(error) {
+
+    console.log(error);
+
+    alert('Unable To Load Customer Records');
+  }
+}
     document.getElementById('totalCustomers').innerHTML = data.length;
 
     document.getElementById('totalAmount').innerHTML = '₹' + totalAmount;
