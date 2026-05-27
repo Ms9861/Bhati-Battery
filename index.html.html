@@ -450,27 +450,40 @@ async function loadData() {
 
     const data = await response.json();
 
+    console.log(data);
+
     const tableBody = document.getElementById('tableBody');
 
     tableBody.innerHTML = '';
 
     let totalAmount = 0;
 
-    data.forEach(row => {
+    data.forEach(item => {
 
-      totalAmount += Number(row.amount);
+      totalAmount += Number(item.amount);
 
       tableBody.innerHTML += `
         <tr>
-          <td>${row.customerName}</td>
-          <td>${row.batteryModel}</td>
-          <td>${row.mobile}</td>
-          <td>${row.date}</td>
-          <td>₹${row.amount}</td>
+          <td>${item.customerName}</td>
+          <td>${item.batteryModel}</td>
+          <td>${item.mobile}</td>
+          <td>${item.date}</td>
+          <td>₹${item.amount}</td>
         </tr>
       `;
     });
 
+    document.getElementById('totalCustomers').innerHTML = data.length;
+
+    document.getElementById('totalAmount').innerHTML = '₹' + totalAmount;
+
+  } catch(error) {
+
+    console.log(error);
+
+    alert('Unable To Load Customer Records');
+  }
+}
     document.getElementById('totalCustomers').innerHTML = data.length;
 
     document.getElementById('totalAmount').innerHTML = '₹' + totalAmount;
