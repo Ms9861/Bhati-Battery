@@ -446,7 +446,7 @@ async function loadData() {
 
   try {
 
-    const response = await fetch(scriptURL + '?action=get');
+    const response = await fetch(scriptURL);
 
     const data = await response.json();
 
@@ -472,10 +472,14 @@ async function loadData() {
     });
 
     document.getElementById('totalCustomers').innerHTML = data.length;
+
     document.getElementById('totalAmount').innerHTML = '₹' + totalAmount;
 
   } catch(error) {
+
     console.log(error);
+
+    alert('Unable To Load Customer Records');
   }
 }
 
