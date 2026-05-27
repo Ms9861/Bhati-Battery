@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -80,7 +81,8 @@
       border:1px solid rgba(255,255,255,.45)
     }
 
-    .title{text-align:center;color:#1d4ed8;font-size:32px;font-weight:800}.subtitle{text-align:center;color:#64748b;margin:8px 0 28px}
+    .title{text-align:center;color:#1d4ed8;font-size:32px;font-weight:800}
+    .subtitle{text-align:center;color:#64748b;margin:8px 0 28px}
 
     .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
     label{display:block;font-weight:600;margin-bottom:8px;color:#334155}
@@ -111,10 +113,199 @@
 
     .toast{position:fixed;right:20px;bottom:20px;background:white;color:#1d4ed8;padding:16px 22px;border-radius:18px;font-weight:700;box-shadow:0 15px 35px rgba(0,0,0,.22);display:none;z-index:20}
 
-    @media(max-width:760px){.navbar{flex-direction:column;gap:14px}.brand h1{font-size:23px}.card{padding:24px 18px}.slide h2{font-size:25px}.scanner-row{flex-direction:column}.scan-btn{width:100%}}
-  </style>
+    @media(max-width:760px){
+      .navbar{flex-direction:column;gap:14px}
+      .brand h1{font-size:23px}
+      .card{padding:24px 18px}
+      .slide h2{font-size:25px}
+      .scanner-row{flex-direction:column}
+      .scan-btn{width:100%}
+    }
+  
+    .bg-orb{
+      position:fixed;
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      filter:blur(35px);
+      opacity:.45;
+      z-index:-1;
+      animation:floatOrb 7s ease-in-out infinite alternate;
+    }
+
+    .orb-one{background:#38bdf8;top:90px;left:30px}
+    .orb-two{background:#2563eb;right:40px;top:240px;animation-delay:1.2s}
+    .orb-three{background:#22c55e;left:45%;bottom:50px;animation-delay:2s}
+
+    @keyframes floatOrb{
+      from{transform:translateY(0) scale(1)}
+      to{transform:translateY(-35px) scale(1.08)}
+    }
+
+    .navbar::after{
+      content:'';
+      position:absolute;
+      left:0;
+      bottom:0;
+      height:3px;
+      width:100%;
+      background:linear-gradient(90deg,#2563eb,#06b6d4,#22c55e,#2563eb);
+      background-size:300% 100%;
+      animation:shineLine 4s linear infinite;
+    }
+
+    @keyframes shineLine{
+      0%{background-position:0%}
+      100%{background-position:300%}
+    }
+
+    .brand-icon{
+      animation:batteryPulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes batteryPulse{
+      0%,100%{box-shadow:0 12px 25px rgba(37,99,235,.35)}
+      50%{box-shadow:0 12px 38px rgba(6,182,212,.65)}
+    }
+
+    .hero-slider::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at top right,rgba(34,197,94,.35),transparent 35%),
+                 radial-gradient(circle at bottom left,rgba(59,130,246,.35),transparent 38%);
+      pointer-events:none;
+    }
+
+    .card{
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:'';
+      position:absolute;
+      top:-80px;
+      right:-80px;
+      width:170px;
+      height:170px;
+      background:linear-gradient(135deg,rgba(37,99,235,.18),rgba(6,182,212,.16));
+      border-radius:50%;
+    }
+
+    .title::after{
+      content:'';
+      display:block;
+      width:90px;
+      height:4px;
+      border-radius:10px;
+      background:linear-gradient(90deg,#2563eb,#06b6d4);
+      margin:10px auto 0;
+    }
+
+    .premium-badges{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:14px;
+      margin:0 0 24px;
+    }
+
+    .premium-badge{
+      background:rgba(255,255,255,.18);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.28);
+      backdrop-filter:blur(14px);
+      padding:16px 18px;
+      border-radius:22px;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      box-shadow:0 12px 25px rgba(0,0,0,.14);
+    }
+
+    .submit-btn{
+      width:100%;
+      font-size:17px;
+      letter-spacing:.3px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .submit-btn::before,
+    .pay-btn::before,
+    .scan-btn::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:80%;
+      height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+      transform:skewX(-20deg);
+      animation:buttonShine 3s infinite;
+    }
+
+    @keyframes buttonShine{
+      0%{left:-100%}
+      45%,100%{left:130%}
+    }
+
+    input:hover,
+    select:hover{
+      border-color:#93c5fd;
+      box-shadow:0 6px 14px rgba(37,99,235,.08);
+    }
+
+    .qr-box{
+      animation:qrPop .35s ease;
+    }
+
+    @keyframes qrPop{
+      from{transform:scale(.96);opacity:.4}
+      to{transform:scale(1);opacity:1}
+    }
+
+    .stat-box{
+      position:relative;
+      overflow:hidden;
+    }
+
+    .stat-box::after{
+      content:'';
+      position:absolute;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:rgba(255,255,255,.16);
+      right:-35px;
+      top:-35px;
+    }
+
+    tbody tr{
+      transition:.25s ease;
+    }
+
+    tbody tr:hover{
+      transform:scale(1.01);
+      box-shadow:0 8px 18px rgba(37,99,235,.12);
+    }
+
+    .section-heading{
+      color:white;
+      text-align:center;
+      margin-bottom:18px;
+      font-size:15px;
+      letter-spacing:.4px;
+      opacity:.92;
+    }
+
+</style>
 </head>
 <body>
+  <div class="bg-orb orb-one"></div>
+  <div class="bg-orb orb-two"></div>
+  <div class="bg-orb orb-three"></div>
 
   <div class="navbar">
     <div class="brand">
@@ -131,9 +322,17 @@
 
   <section id="registerPage" class="page active">
     <div class="container">
+
+      <div class="premium-badges">
+        <div class="premium-badge">⚡ Fast Registration</div>
+        <div class="premium-badge">📷 Barcode Scanner</div>
+        <div class="premium-badge">💳 Smart UPI QR</div>
+        <div class="premium-badge">📊 Live Records</div>
+      </div>
+
       <div class="hero-slider">
         <div class="slide active-slide"><h2>Smart Battery Registration</h2><p>Scan barcode, collect payments, and save customer data professionally.</p></div>
-        <div class="slide"><h2>UPI Payment QR System</h2><p>Online payment option with 10-minute timer and success sound.</p></div>
+        <div class="slide"><h2>Dynamic UPI QR System</h2><p>QR automatically shows the entered amount in customer's UPI app.</p></div>
         <div class="slide"><h2>Advanced Customer Dashboard</h2><p>Search, sort, monthly total, and financial year total.</p></div>
       </div>
 
@@ -164,8 +363,8 @@
             </div>
 
             <div class="form-group">
-              <label>Date</label>
-              <input type="date" id="date" required>
+              <label>Date & Time</label>
+              <input type="text" id="date" readonly required placeholder="DD/MM/YYYY HH:MM:SS">
             </div>
 
             <div class="form-group">
@@ -229,7 +428,7 @@
           <table>
             <thead>
               <tr>
-                <th>Customer Name</th><th>Battery Model</th><th>Mobile Number</th><th>Date</th><th>Amount</th><th>Payment Mode</th>
+                <th>Customer Name</th><th>Battery Model</th><th>Mobile Number</th><th>Date & Time</th><th>Amount</th><th>Payment Mode</th>
               </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -240,7 +439,7 @@
   </section>
 
 <script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbw86RbCebJgR0NtxTbUnc4gvoEWduao4AoXqnGfUPniLgGw2PVrJwwvN_0rGqBAJyxO/exec';
+  const scriptURL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
   const upiBaseLink = 'upi://pay?pa=7240610313@pthdfc&pn=Mohd Sohail&cu=INR';
 
   let allData = [];
@@ -249,7 +448,21 @@
   let paymentInterval = null;
   let paymentReceived = false;
 
-  document.getElementById('date').valueAsDate = new Date();
+  function updateDateTime(){
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2,'0');
+    const month = String(now.getMonth() + 1).padStart(2,'0');
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2,'0');
+    const minutes = String(now.getMinutes()).padStart(2,'0');
+    const seconds = String(now.getSeconds()).padStart(2,'0');
+
+    document.getElementById('date').value =
+      `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  }
+
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
 
   function updatePaymentQR(){
     const amount = document.getElementById('amount').value;
@@ -259,14 +472,15 @@
       finalUpiLink += '&am=' + encodeURIComponent(amount);
     }
 
-    const qrImageURL = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' + encodeURIComponent(finalUpiLink);
+    const qrImageURL =
+      'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' +
+      encodeURIComponent(finalUpiLink);
 
     document.getElementById('paymentQR').src = qrImageURL;
     document.getElementById('upiText').innerText = finalUpiLink;
   }
 
   updatePaymentQR();
-
   document.getElementById('amount').addEventListener('input', updatePaymentQR);
 
   function playTone(freq, duration, volume = 1){
@@ -274,11 +488,16 @@
     const ctx = new AudioContext();
     const oscillator = ctx.createOscillator();
     const gain = ctx.createGain();
-    oscillator.connect(gain); gain.connect(ctx.destination);
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
     oscillator.frequency.value = freq;
     oscillator.type = 'sine';
+
     gain.gain.setValueAtTime(volume, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration / 1000);
+
     oscillator.start();
     oscillator.stop(ctx.currentTime + duration / 1000);
   }
@@ -306,6 +525,7 @@
     const slides = document.querySelectorAll('.slide');
     const current = document.querySelector('.active-slide');
     let index = Array.from(slides).indexOf(current);
+
     current.classList.remove('active-slide');
     slides[(index + 1) % slides.length].classList.add('active-slide');
   }, 3500);
@@ -317,6 +537,7 @@
 
   async function startScanner(){
     if(scannerRunning) return;
+
     if(!window.Html5Qrcode){
       alert('Scanner library not loaded. Check internet connection.');
       return;
@@ -353,6 +574,7 @@
         await qrScanner.clear();
       }
     }catch(e){}
+
     scannerRunning = false;
     document.getElementById('reader').innerHTML = '';
     document.getElementById('stopScanBtn').style.display = 'none';
@@ -382,13 +604,16 @@
     paymentInterval = setInterval(() => {
       const min = Math.floor(remaining / 60);
       const sec = remaining % 60;
-      document.getElementById('paymentTimer').innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+
+      document.getElementById('paymentTimer').innerText =
+        `${min}:${sec < 10 ? '0' : ''}${sec}`;
 
       if(remaining <= 0){
         clearInterval(paymentInterval);
         document.getElementById('paymentTimer').innerText = 'Time Expired';
         showToast('Payment time expired');
       }
+
       remaining--;
     }, 1000);
   }
@@ -438,14 +663,19 @@
       });
 
       const result = await response.json();
+
       status.innerHTML = result.message || 'Submitted Successfully';
       playSubmitSuccessSound();
       showToast('Registration submitted successfully');
+
       this.reset();
-      document.getElementById('date').valueAsDate = new Date();
+      updateDateTime();
+      updatePaymentQR();
+
       document.getElementById('qrBox').style.display = 'none';
       clearInterval(paymentInterval);
       paymentReceived = false;
+
     }catch(error){
       status.innerHTML = 'Connection Failed';
     }
@@ -461,10 +691,66 @@
     }
   }
 
+  function formatDateForDisplay(value){
+    if(!value) return '';
+
+    const text = String(value);
+
+    if(text.includes('/') && text.includes(':')){
+      return text;
+    }
+
+    let dateObj;
+
+    if(text.includes('/')){
+      const datePart = text.split(' ')[0];
+      const timePart = text.split(' ')[1] || '00:00:00';
+      const parts = datePart.split('/');
+
+      if(parts.length === 3){
+        dateObj = new Date(`${parts[2]}-${parts[1]}-${parts[0]}T${timePart}`);
+      }
+    } else {
+      dateObj = new Date(text);
+    }
+
+    if(!dateObj || isNaN(dateObj.getTime())){
+      return text;
+    }
+
+    const day = String(dateObj.getDate()).padStart(2,'0');
+    const month = String(dateObj.getMonth() + 1).padStart(2,'0');
+    const year = dateObj.getFullYear();
+
+    const hours = String(dateObj.getHours()).padStart(2,'0');
+    const minutes = String(dateObj.getMinutes()).padStart(2,'0');
+    const seconds = String(dateObj.getSeconds()).padStart(2,'0');
+
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  }
+
+  function parseRecordDate(value){
+    const formatted = formatDateForDisplay(value);
+    const datePart = formatted.split(' ')[0];
+    const timePart = formatted.split(' ')[1] || '00:00:00';
+
+    const parts = datePart.split('/');
+
+    if(parts.length !== 3){
+      return new Date(value);
+    }
+
+    return new Date(`${parts[2]}-${parts[1]}-${parts[0]}T${timePart}`);
+  }
+
   function renderTable(data){
     const tableBody = document.getElementById('tableBody');
     tableBody.innerHTML = '';
-    let totalAmount = 0, monthlyTotal = 0, financialTotal = 0;
+
+    let totalAmount = 0;
+    let monthlyTotal = 0;
+    let financialTotal = 0;
+
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
@@ -473,16 +759,26 @@
     data.forEach(item=>{
       const amount = Number(item.amount) || 0;
       totalAmount += amount;
-      const d = new Date(item.date);
 
-      if(d.getMonth() === currentMonth && d.getFullYear() === currentYear) monthlyTotal += amount;
-      if((d.getFullYear() === fyStart && d.getMonth() >= 3) || (d.getFullYear() === fyStart + 1 && d.getMonth() <= 2)) financialTotal += amount;
+      const displayDate = formatDateForDisplay(item.date);
+      const d = parseRecordDate(item.date);
+
+      if(d.getMonth() === currentMonth && d.getFullYear() === currentYear){
+        monthlyTotal += amount;
+      }
+
+      if(
+        (d.getFullYear() === fyStart && d.getMonth() >= 3) ||
+        (d.getFullYear() === fyStart + 1 && d.getMonth() <= 2)
+      ){
+        financialTotal += amount;
+      }
 
       tableBody.innerHTML += `<tr>
         <td>${item.customerName || ''}</td>
         <td>${item.batteryModel || ''}</td>
         <td>${item.mobile || ''}</td>
-        <td>${item.date || ''}</td>
+        <td>${displayDate}</td>
         <td>₹${amount}</td>
         <td>${item.paymentMode || ''}</td>
       </tr>`;
@@ -496,18 +792,38 @@
 
   function searchTable(){
     const value = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = allData.filter(item => Object.values(item).join(' ').toLowerCase().includes(value));
+
+    const filtered = allData.filter(item =>
+      Object.values(item).join(' ').toLowerCase().includes(value)
+    );
+
     renderTable(filtered);
   }
 
   function sortTable(){
     const value = document.getElementById('sortSelect').value;
     let sorted = [...allData];
-    if(value === 'name') sorted.sort((a,b)=>(a.customerName||'').localeCompare(b.customerName||''));
-    if(value === 'mobile') sorted.sort((a,b)=>Number(a.mobile)-Number(b.mobile));
-    if(value === 'amount') sorted.sort((a,b)=>Number(a.amount)-Number(b.amount));
-    if(value === 'date') sorted.sort((a,b)=>new Date(a.date)-new Date(b.date));
-    if(value === 'paymentMode') sorted.sort((a,b)=>(a.paymentMode||'').localeCompare(b.paymentMode||''));
+
+    if(value === 'name'){
+      sorted.sort((a,b)=>(a.customerName || '').localeCompare(b.customerName || ''));
+    }
+
+    if(value === 'mobile'){
+      sorted.sort((a,b)=>Number(a.mobile) - Number(b.mobile));
+    }
+
+    if(value === 'amount'){
+      sorted.sort((a,b)=>Number(a.amount) - Number(b.amount));
+    }
+
+    if(value === 'date'){
+      sorted.sort((a,b)=>parseRecordDate(a.date) - parseRecordDate(b.date));
+    }
+
+    if(value === 'paymentMode'){
+      sorted.sort((a,b)=>(a.paymentMode || '').localeCompare(b.paymentMode || ''));
+    }
+
     renderTable(sorted);
   }
 </script>
