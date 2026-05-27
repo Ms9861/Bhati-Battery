@@ -446,11 +446,9 @@ async function loadData() {
 
   try {
 
-    const response = await fetch(scriptURL);
+    const response = await fetch(scriptURL + '?action=get');
 
     const data = await response.json();
-
-    console.log(data);
 
     const tableBody = document.getElementById('tableBody');
 
@@ -458,53 +456,26 @@ async function loadData() {
 
     let totalAmount = 0;
 
-    data.forEach(item => {
+    data.forEach(row => {
 
-      totalAmount += Number(item.amount);
+      totalAmount += Number(row.amount);
 
       tableBody.innerHTML += `
         <tr>
-          <td>${item.customerName}</td>
-          <td>${item.batteryModel}</td>
-          <td>${item.mobile}</td>
-          <td>${item.date}</td>
-          <td>₹${item.amount}</td>
+          <td>${row.customerName}</td>
+          <td>${row.batteryModel}</td>
+          <td>${row.mobile}</td>
+          <td>${row.date}</td>
+          <td>₹${row.amount}</td>
         </tr>
       `;
     });
 
     document.getElementById('totalCustomers').innerHTML = data.length;
-
     document.getElementById('totalAmount').innerHTML = '₹' + totalAmount;
 
   } catch(error) {
-
     console.log(error);
-
-    alert('Unable To Load Customer Records');
-  }
-}
-
-    document.getElementById('totalCustomers').innerHTML = data.length;
-
-    document.getElementById('totalAmount').innerHTML = '₹' + totalAmount;
-
-  } catch(error) {
-
-    console.log(error);
-
-    alert('Unable To Load Customer Records');
-  }
-}
-    document.getElementById('totalCustomers').innerHTML = data.length;
-
-    document.getElementById('totalAmount').innerHTML = '₹' + totalAmount;
-
-  } catch(error) {
-
-    console.log(error);
-
-    alert('Unable To Load Customer Records');
   }
 }
 
