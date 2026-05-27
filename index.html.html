@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BHATI BATTERY Advanced Dashboard</title>
+  <title>BHATI BATTERY Dashboard</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/html5-qrcode"></script>
@@ -420,6 +420,7 @@
             <option value="mobile">Mobile Number</option>
             <option value="amount">Amount</option>
             <option value="date">Date</option>
+            <option value="battery">Battery Model</option>
             <option value="paymentMode">Payment Mode</option>
           </select>
         </div>
@@ -428,7 +429,7 @@
           <table>
             <thead>
               <tr>
-                <th>Customer Name</th><th>Battery Model</th><th>Mobile Number</th><th>Date & Time</th><th>Amount</th><th>Payment Mode</th>
+                <th>Customer Name</th><th>Battery Model</th><th>Mobile Number</th><th>Date & Time</th><th>Amount</th><th>Battery Model</th>th><th>Payment Mode</th>
               </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -801,31 +802,67 @@
   }
 
   function sortTable(){
-    const value = document.getElementById('sortSelect').value;
-    let sorted = [...allData];
 
-    if(value === 'name'){
-      sorted.sort((a,b)=>(a.customerName || '').localeCompare(b.customerName || ''));
-    }
+const value =
+document.getElementById('sortSelect').value;
 
-    if(value === 'mobile'){
-      sorted.sort((a,b)=>Number(a.mobile) - Number(b.mobile));
-    }
+let sorted = [...allData];
 
-    if(value === 'amount'){
-      sorted.sort((a,b)=>Number(a.amount) - Number(b.amount));
-    }
+if(value==='name'){
 
-    if(value === 'date'){
-      sorted.sort((a,b)=>parseRecordDate(a.date) - parseRecordDate(b.date));
-    }
+sorted.sort((a,b)=>
 
-    if(value === 'paymentMode'){
-      sorted.sort((a,b)=>(a.paymentMode || '').localeCompare(b.paymentMode || ''));
-    }
+(a.customerName || '')
+.localeCompare(b.customerName || '')
 
-    renderTable(sorted);
-  }
+);
+}
+
+if(value==='battery'){
+
+sorted.sort((a,b)=>
+
+(a.batteryModel || '')
+.localeCompare(b.batteryModel || '')
+
+);
+}
+
+if(value==='mobile'){
+
+sorted.sort((a,b)=>
+
+Number(a.mobile)
+-
+Number(b.mobile)
+
+);
+}
+
+if(value==='amount'){
+
+sorted.sort((a,b)=>
+
+Number(a.amount)
+-
+Number(b.amount)
+
+);
+}
+
+if(value==='date'){
+
+sorted.sort((a,b)=>
+
+new Date(a.date)
+-
+new Date(b.date)
+
+);
+}
+
+renderTable(sorted);
+}
 </script>
 </body>
 </html>
