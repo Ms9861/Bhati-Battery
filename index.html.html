@@ -163,7 +163,30 @@
               <input type="number" id="amount" min="1" required placeholder="Enter amount">
             </div>
           </div>
+         <div class="form-group">
+  <label>Payment Received</label>
+  <select id="paymentMode" required onchange="showPaymentQR()">
+    <option value="">Select Payment Mode</option>
+    <option value="Cash">Cash</option>
+    <option value="Online">Online</option>
+  </select>
+</div>
 
+<div id="qrBox" style="display:none; text-align:center; margin-top:20px;">
+  <h3 style="color:#1d4ed8; margin-bottom:10px;">Scan QR to Pay</h3>
+
+  <img 
+    src="upi://pay?pa=7240610313@pthdfc&pn=Mohd Sohail" 
+    alt="Payment QR Code"
+    style="width:220px; max-width:100%; border-radius:18px; box-shadow:0 10px 25px rgba(0,0,0,0.2);"
+  >
+
+  <br><br>
+
+  <button type="button" class="submit-btn" onclick="paymentReceivedSound()">
+    Payment Received
+  </button>
+</div>
           <button type="submit" class="submit-btn">Submit Registration</button>
           <div id="status"></div>
         </form>
@@ -381,6 +404,18 @@
     if(value === 'date') sorted.sort((a,b)=>new Date(a.date)-new Date(b.date));
     renderTable(sorted);
   }
+  function showPaymentQR() {
+  const mode = document.getElementById("paymentMode").value;
+  const qrBox = document.getElementById("qrBox");
+
+  qrBox.style.display = mode === "Online" ? "block" : "none";
+}
+
+function paymentReceivedSound() {
+  playSubmitSuccessSound();
+  showToast("Online Payment Received Successfully");
+}
+  
 </script>
 </body>
 </html>
