@@ -305,11 +305,40 @@
             <input type="text" id="customerName" required>
           </div>
 
-          <div class="form-group">
-            <label>Battery Model</label>
-            <input type="text" id="batteryModel" required>
-          </div>
+         <div class="form-group">
+  <label>Battery Model</label>
 
+  <div style="display:flex; gap:10px;">
+
+    <input
+      type="text"
+      id="batteryModel"
+      required
+      placeholder="Scan or Enter Battery Model"
+      style="flex:1;"
+    >
+
+    <button
+      type="button"
+      onclick="startScanner()"
+      style="
+        padding:14px 18px;
+        border:none;
+        border-radius:14px;
+        background:linear-gradient(135deg,#2563eb,#1d4ed8);
+        color:white;
+        cursor:pointer;
+        font-weight:600;
+      "
+    >
+      Scan
+    </button>
+
+  </div>
+
+  <div id="reader" style="width:100%; margin-top:15px;"></div>
+
+</div>
           <div class="form-group">
             <label>Mobile Number</label>
             <input type="tel" id="mobile" pattern="[0-9]{10}" maxlength="10" required>
@@ -351,6 +380,15 @@
         <p id="totalAmount">₹0</p>
       </div>
     </div>
+    <div class="stat-box">
+  <h3>Monthly Total</h3>
+  <p id="monthlyTotal">₹0</p>
+</div>
+
+<div class="stat-box">
+  <h3>Financial Year Total</h3>
+  <p id="financialTotal">₹0</p>
+</div>
 
     <div class="card" style="backdrop-filter: blur(14px); background: rgba(255,255,255,0.92);">
 
@@ -446,7 +484,7 @@ async function loadData() {
 
   try {
 
-    const response = await fetch(scriptURL + '?action=get');
+    const response = await fetch(scriptURL);
 
     const data = await response.json();
 
@@ -455,27 +493,71 @@ async function loadData() {
     tableBody.innerHTML = '';
 
     let totalAmount = 0;
+    let monthlyTotal = 0;
+    let financialTotal = 0;
 
-    data.forEach(row => {
+    const currentDate = new Date();
 
-      totalAmount += Number(row.amount);
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    const financialStart =
+      currentMonth >= 3 ? currentYear : currentYear - 1;
+
+    data.forEach(item => {
+
+      const amount = Number(item.amount);
+
+      totalAmount += amount;
+
+      const itemDate = new Date(item.date);
+
+      // Monthly Total
+      if(
+        itemDate.getMonth() === currentMonth &&
+        itemDate.getFullYear() === currentYear
+      ) {
+        monthlyTotal += amount;
+      }
+
+      // Financial Year Total
+      const itemYear = itemDate.getFullYear();
+      const itemMonth = itemDate.getMonth();
+
+      if(
+        (itemYear === financialStart && itemMonth >= 3) ||
+        (itemYear === financialStart + 1 && itemMonth <= 2)
+      ) {
+        financialTotal += amount;
+      }
 
       tableBody.innerHTML += `
         <tr>
-          <td>${row.customerName}</td>
-          <td>${row.batteryModel}</td>
-          <td>${row.mobile}</td>
-          <td>${row.date}</td>
-          <td>₹${row.amount}</td>
+          <td>${item.customerName}</td>
+          <td>${item.batteryModel}</td>
+          <td>${item.mobile}</td>
+          <td>${item.date}</td>
+          <td>₹${item.amount}</td>
         </tr>
       `;
     });
 
     document.getElementById('totalCustomers').innerHTML = data.length;
-    document.getElementById('totalAmount').innerHTML = '₹' + totalAmount;
+
+    document.getElementById('totalAmount').innerHTML =
+      '₹' + totalAmount;
+
+    document.getElementById('monthlyTotal').innerHTML =
+      '₹' + monthlyTotal;
+
+    document.getElementById('financialTotal').innerHTML =
+      '₹' + financialTotal;
 
   } catch(error) {
+
     console.log(error);
+
+    alert('Unable To Load Customer Records');
   }
 }
 
@@ -537,6 +619,37 @@ function sortTable() {
 }
 
 </script>
+<script src="https://unpkg.com/html5-qrcode">
+  function startScanner() {
 
+  const html5QrCode = new Html5Qrcode("reader");
+
+  Html5Qrcode.getCameras().then(devices => {
+
+    if(devices && devices.length) {
+
+      html5QrCode.start(
+
+        devices[0].id,
+
+        {
+          fps: 10,
+          qrbox: 250
+        },
+
+        (decodedText) => {
+
+          document.getElementById('batteryModel').value = decodedText;
+
+          html5QrCode.stop();
+
+          document.getElementById('reader').innerHTML = '';
+        }
+
+      );
+    }
+  });
+}
+</script>
 </body>
 </html>
