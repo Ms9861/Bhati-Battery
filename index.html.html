@@ -47,12 +47,12 @@
 
     .nav-actions{display:flex;gap:12px;flex-wrap:wrap}
 
-    .nav-btn,.submit-btn,.scan-btn,.stop-btn{
+    .nav-btn,.submit-btn,.scan-btn,.stop-btn,.pay-btn{
       border:none;border-radius:15px;padding:13px 20px;
       font-weight:700;cursor:pointer;transition:.25s;
     }
 
-    .nav-btn,.submit-btn,.scan-btn{
+    .nav-btn,.submit-btn,.scan-btn,.pay-btn{
       background:linear-gradient(135deg,#2563eb,#0891b2);
       color:#fff;box-shadow:0 10px 24px rgba(37,99,235,.25)
     }
@@ -90,6 +90,16 @@
     .scanner-row{display:flex;gap:10px;align-items:center}.scanner-row input{flex:1}.scan-btn{white-space:nowrap;padding:14px 16px}
     #reader{width:100%;max-width:460px;margin-top:14px;border-radius:22px;overflow:hidden;background:white}
 
+    .qr-box{
+      display:none;margin-top:24px;padding:24px;border-radius:24px;text-align:center;
+      background:linear-gradient(135deg,#eff6ff,#ecfeff);
+      border:1px solid #bfdbfe;
+    }
+
+    .qr-box img{width:230px;max-width:100%;border-radius:20px;background:white;padding:12px;box-shadow:0 12px 28px rgba(0,0,0,.18)}
+    .timer{font-size:24px;font-weight:800;color:#dc2626;margin:14px 0 8px}
+    .upi-link{font-size:13px;color:#475569;word-break:break-all;margin-top:10px}
+
     #status{margin-top:18px;text-align:center;font-weight:700;color:#1d4ed8}
 
     .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:24px}
@@ -122,9 +132,9 @@
   <section id="registerPage" class="page active">
     <div class="container">
       <div class="hero-slider">
-        <div class="slide active-slide"><h2>Smart Battery Registration</h2><p>Scan barcode, save customer data, and manage records professionally.</p></div>
-        <div class="slide"><h2>Fast Google Sheets Storage</h2><p>Every registration directly saves to your connected Google Sheet.</p></div>
-        <div class="slide"><h2>Advanced Customer Dashboard</h2><p>Search, sort, and calculate monthly and financial year totals.</p></div>
+        <div class="slide active-slide"><h2>Smart Battery Registration</h2><p>Scan barcode, collect payments, and save customer data professionally.</p></div>
+        <div class="slide"><h2>UPI Payment QR System</h2><p>Online payment option with 10-minute timer and success sound.</p></div>
+        <div class="slide"><h2>Advanced Customer Dashboard</h2><p>Search, sort, monthly total, and financial year total.</p></div>
       </div>
 
       <div class="card">
@@ -162,31 +172,27 @@
               <label>Amount</label>
               <input type="number" id="amount" min="1" required placeholder="Enter amount">
             </div>
+
+            <div class="form-group">
+              <label>Payment Received</label>
+              <select id="paymentMode" required onchange="handlePaymentMode()">
+                <option value="">Select Payment Mode</option>
+                <option value="Cash">Cash</option>
+                <option value="Online">Online</option>
+              </select>
+            </div>
           </div>
-         <div class="form-group">
-  <label>Payment Received</label>
-  <select id="paymentMode" required onchange="showPaymentQR()">
-    <option value="">Select Payment Mode</option>
-    <option value="Cash">Cash</option>
-    <option value="Online">Online</option>
-  </select>
-</div>
 
-<div id="qrBox" style="display:none; text-align:center; margin-top:20px;">
-  <h3 style="color:#1d4ed8; margin-bottom:10px;">Scan QR to Pay</h3>
+          <div class="qr-box" id="qrBox">
+            <h3 style="color:#1d4ed8;margin-bottom:12px;">Scan QR to Pay</h3>
+            <img id="paymentQR" alt="BHATI BATTERY UPI QR">
+            <div class="timer" id="paymentTimer">10:00</div>
+            <p style="color:#475569;font-size:14px;">Complete payment within 10 minutes</p>
+            <p class="upi-link" id="upiText"></p>
+            <br>
+            <button type="button" class="pay-btn" onclick="markPaymentReceived()">✅ Payment Received</button>
+          </div>
 
-  <img 
-    src="upi://pay?pa=7240610313@pthdfc&pn=Mohd Sohail" 
-    alt="Payment QR Code"
-    style="width:220px; max-width:100%; border-radius:18px; box-shadow:0 10px 25px rgba(0,0,0,0.2);"
-  >
-
-  <br><br>
-
-  <button type="button" class="submit-btn" onclick="paymentReceivedSound()">
-    Payment Received
-  </button>
-</div>
           <button type="submit" class="submit-btn">Submit Registration</button>
           <div id="status"></div>
         </form>
@@ -215,6 +221,7 @@
             <option value="mobile">Mobile Number</option>
             <option value="amount">Amount</option>
             <option value="date">Date</option>
+            <option value="paymentMode">Payment Mode</option>
           </select>
         </div>
 
@@ -222,7 +229,7 @@
           <table>
             <thead>
               <tr>
-                <th>Customer Name</th><th>Battery Model</th><th>Mobile Number</th><th>Date</th><th>Amount</th>
+                <th>Customer Name</th><th>Battery Model</th><th>Mobile Number</th><th>Date</th><th>Amount</th><th>Payment Mode</th>
               </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -233,23 +240,59 @@
   </section>
 
 <script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxVRq5fncXxZMLQP3NawyqeJKWJSklCkdA__QflPtJCjawzfvs0lkgMu2BmZGA4ZLkN/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbw86RbCebJgR0NtxTbUnc4gvoEWduao4AoXqnGfUPniLgGw2PVrJwwvN_0rGqBAJyxO/exec';
+  const upiBaseLink = 'upi://pay?pa=7240610313@pthdfc&pn=Mohd Sohail&cu=INR';
+
   let allData = [];
   let qrScanner = null;
   let scannerRunning = false;
+  let paymentInterval = null;
+  let paymentReceived = false;
 
   document.getElementById('date').valueAsDate = new Date();
 
-  function beep(freq = 700, duration = 180){
+  function updatePaymentQR(){
+    const amount = document.getElementById('amount').value;
+    let finalUpiLink = upiBaseLink;
+
+    if(amount && Number(amount) > 0){
+      finalUpiLink += '&am=' + encodeURIComponent(amount);
+    }
+
+    const qrImageURL = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' + encodeURIComponent(finalUpiLink);
+
+    document.getElementById('paymentQR').src = qrImageURL;
+    document.getElementById('upiText').innerText = finalUpiLink;
+  }
+
+  updatePaymentQR();
+
+  document.getElementById('amount').addEventListener('input', updatePaymentQR);
+
+  function playTone(freq, duration, volume = 1){
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
     const oscillator = ctx.createOscillator();
     const gain = ctx.createGain();
     oscillator.connect(gain); gain.connect(ctx.destination);
-    oscillator.frequency.value = freq; oscillator.type = 'sine';
-    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    oscillator.frequency.value = freq;
+    oscillator.type = 'sine';
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration / 1000);
     oscillator.start();
     oscillator.stop(ctx.currentTime + duration / 1000);
+  }
+
+  function playSubmitSuccessSound(){
+    const notes = [784, 988, 1318, 1568];
+    notes.forEach((freq, index) => {
+      setTimeout(() => playTone(freq, 230, 1), index * 120);
+    });
+  }
+
+  function playBarcodeSound(){
+    playTone(1000, 120, 1);
+    setTimeout(() => playTone(1300, 120, 1), 130);
   }
 
   function showToast(message){
@@ -290,7 +333,7 @@
         { fps: 10, qrbox: { width: 280, height: 140 } },
         async (decodedText) => {
           document.getElementById('batteryModel').value = decodedText;
-          beep(950, 220);
+          playBarcodeSound();
           showToast('Barcode scanned successfully');
           await stopScanner();
         },
@@ -299,7 +342,7 @@
     }catch(error){
       scannerRunning = false;
       document.getElementById('stopScanBtn').style.display = 'none';
-      alert('Camera permission denied or scanner needs HTTPS/localhost. Open with Live Server or host online.');
+      alert('Camera permission denied or scanner needs HTTPS/localhost.');
     }
   }
 
@@ -315,8 +358,66 @@
     document.getElementById('stopScanBtn').style.display = 'none';
   }
 
+  function handlePaymentMode(){
+    const mode = document.getElementById('paymentMode').value;
+    const qrBox = document.getElementById('qrBox');
+
+    if(mode === 'Online'){
+      updatePaymentQR();
+      qrBox.style.display = 'block';
+      paymentReceived = false;
+      startPaymentTimer(10 * 60);
+    } else {
+      qrBox.style.display = 'none';
+      clearInterval(paymentInterval);
+      document.getElementById('paymentTimer').innerText = '10:00';
+      paymentReceived = mode === 'Cash';
+    }
+  }
+
+  function startPaymentTimer(seconds){
+    clearInterval(paymentInterval);
+    let remaining = seconds;
+
+    paymentInterval = setInterval(() => {
+      const min = Math.floor(remaining / 60);
+      const sec = remaining % 60;
+      document.getElementById('paymentTimer').innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+
+      if(remaining <= 0){
+        clearInterval(paymentInterval);
+        document.getElementById('paymentTimer').innerText = 'Time Expired';
+        showToast('Payment time expired');
+      }
+      remaining--;
+    }, 1000);
+  }
+
+  function markPaymentReceived(){
+    paymentReceived = true;
+    clearInterval(paymentInterval);
+
+    document.getElementById('paymentTimer').innerText = 'Payment Received';
+
+    playSubmitSuccessSound();
+    showToast('Online payment received successfully');
+
+    setTimeout(() => {
+      document.getElementById('qrBox').style.display = 'none';
+      document.getElementById('paymentTimer').innerText = '10:00';
+    }, 1200);
+  }
+
   document.getElementById('registrationForm').addEventListener('submit', async function(e){
     e.preventDefault();
+
+    const paymentMode = document.getElementById('paymentMode').value;
+
+    if(paymentMode === 'Online' && !paymentReceived){
+      alert('Please confirm online payment received first.');
+      return;
+    }
+
     const status = document.getElementById('status');
     status.innerHTML = 'Submitting...';
 
@@ -325,7 +426,8 @@
       batteryModel: document.getElementById('batteryModel').value,
       mobile: document.getElementById('mobile').value,
       date: document.getElementById('date').value,
-      amount: document.getElementById('amount').value
+      amount: document.getElementById('amount').value,
+      paymentMode: paymentMode
     };
 
     try{
@@ -334,12 +436,16 @@
         headers:{'Content-Type':'text/plain;charset=utf-8'},
         body:JSON.stringify(data)
       });
+
       const result = await response.json();
       status.innerHTML = result.message || 'Submitted Successfully';
-      beep(650,120); setTimeout(()=>beep(850,120),140);
+      playSubmitSuccessSound();
       showToast('Registration submitted successfully');
       this.reset();
       document.getElementById('date').valueAsDate = new Date();
+      document.getElementById('qrBox').style.display = 'none';
+      clearInterval(paymentInterval);
+      paymentReceived = false;
     }catch(error){
       status.innerHTML = 'Connection Failed';
     }
@@ -378,6 +484,7 @@
         <td>${item.mobile || ''}</td>
         <td>${item.date || ''}</td>
         <td>₹${amount}</td>
+        <td>${item.paymentMode || ''}</td>
       </tr>`;
     });
 
@@ -389,9 +496,7 @@
 
   function searchTable(){
     const value = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = allData.filter(item =>
-      Object.values(item).join(' ').toLowerCase().includes(value)
-    );
+    const filtered = allData.filter(item => Object.values(item).join(' ').toLowerCase().includes(value));
     renderTable(filtered);
   }
 
@@ -402,20 +507,9 @@
     if(value === 'mobile') sorted.sort((a,b)=>Number(a.mobile)-Number(b.mobile));
     if(value === 'amount') sorted.sort((a,b)=>Number(a.amount)-Number(b.amount));
     if(value === 'date') sorted.sort((a,b)=>new Date(a.date)-new Date(b.date));
+    if(value === 'paymentMode') sorted.sort((a,b)=>(a.paymentMode||'').localeCompare(b.paymentMode||''));
     renderTable(sorted);
   }
-  function showPaymentQR() {
-  const mode = document.getElementById("paymentMode").value;
-  const qrBox = document.getElementById("qrBox");
-
-  qrBox.style.display = mode === "Online" ? "block" : "none";
-}
-
-function paymentReceivedSound() {
-  playSubmitSuccessSound();
-  showToast("Online Payment Received Successfully");
-}
-  
 </script>
 </body>
 </html>
