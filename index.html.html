@@ -632,6 +632,61 @@ function sortTable() {
   rows.forEach(row => tbody.appendChild(row));
 }
  <script src="https://unpkg.com/html5-qrcode">
+   let scannerRunning = false;
+
+async function startScanner() {
+
+  if(scannerRunning) return;
+
+  scannerRunning = true;
+
+  const reader = document.getElementById("reader");
+
+  reader.innerHTML = "";
+
+  const html5QrCode = new Html5Qrcode("reader");
+
+  try {
+
+    const cameras = await Html5Qrcode.getCameras();
+
+    if(cameras && cameras.length) {
+
+      await html5QrCode.start(
+
+        cameras[0].id,
+
+        {
+          fps: 10,
+          qrbox: {
+            width: 250,
+            height: 120
+          }
+        },
+
+        async(decodedText) => {
+
+          document.getElementById("batteryModel").value = decodedText;
+
+          await html5QrCode.stop();
+
+          reader.innerHTML = "";
+
+          scannerRunning = false;
+        }
+
+      );
+    }
+
+  } catch(error) {
+
+    console.log(error);
+
+    alert("Camera access denied or scanner failed");
+
+    scannerRunning = false;
+  }
+}
 </script>
    
       
