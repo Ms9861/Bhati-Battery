@@ -305,9 +305,204 @@ href="https://cdn-icons-png.flaticon.com/512/3103/3103446.png">
       opacity:.92;
     }
 
+
+/* ===== LOGIN / SIGN-UP GATE ===== */
+#authGate{
+  position:fixed;inset:0;z-index:99999;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(255,230,238,.95),transparent 30%),
+    radial-gradient(circle at 90% 90%,rgba(250,193,209,.95),transparent 30%),
+    linear-gradient(145deg,#fff7f9,#f7c1d0);
+  font-family:'Poppins',sans-serif;
+}
+.auth-shell{
+  width:min(1050px,100%);min-height:650px;
+  display:grid;grid-template-columns:1fr 1fr;
+  background:#fff;border:1px solid #f1e1e6;border-radius:30px;
+  overflow:hidden;box-shadow:0 25px 70px rgba(76,38,50,.18);
+}
+.auth-visual{
+  position:relative;overflow:hidden;padding:46px;
+  display:flex;flex-direction:column;
+  background:linear-gradient(145deg,#fff5f8,#f8c1d0 58%,#ee99b1);
+}
+.auth-logo{font-size:25px;font-weight:900;letter-spacing:-1px;z-index:2;color:#211b1e}
+.auth-logo span{color:#b84f6c}
+.auth-visual-main{margin:auto 0;z-index:2}
+.auth-kicker{font-size:10px;letter-spacing:2.4px;font-weight:900;color:#a34d67;margin-bottom:18px}
+.auth-visual h1{font-size:clamp(40px,4.5vw,64px);line-height:.98;letter-spacing:-3px;margin:0 0 20px;color:#211b1e}
+.auth-visual h1 span{color:#b84f6c}
+.auth-visual p{max-width:430px;line-height:1.65;color:#765c65;font-size:15px}
+.auth-stat-row{display:flex;gap:12px;margin-top:30px}
+.auth-stat{
+  min-width:145px;padding:16px 18px;border-radius:16px;
+  background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.7);
+  backdrop-filter:blur(10px)
+}
+.auth-stat b{display:block;font-size:18px;color:#211b1e}.auth-stat small{color:#866c74}
+.auth-circle{position:absolute;border-radius:50%;background:rgba(255,255,255,.25)}
+.auth-c1{width:420px;height:420px;right:-180px;top:-80px}
+.auth-c2{width:260px;height:260px;left:-120px;bottom:-110px}
+.auth-form-panel{padding:46px;display:flex;align-items:center;justify-content:center;background:#fff}
+.auth-box{width:min(390px,100%);color:#211b1e}
+.auth-mobile-logo{display:none}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#faf3f5;border-radius:13px;padding:5px;margin-bottom:25px}
+.auth-tab{height:40px;border:0;background:transparent;border-radius:9px;color:#9a858c;font-weight:800;font-size:12px;cursor:pointer}
+.auth-tab.active{background:#fff;color:#211b1e;box-shadow:0 3px 10px rgba(45,25,32,.07)}
+.auth-pill{display:inline-block;padding:7px 10px;border-radius:999px;background:#fff1f5;border:1px solid #f5d6df;color:#b6526d;font-size:10px;font-weight:900;letter-spacing:1.4px}
+.auth-box h2{font-size:34px;letter-spacing:-1.5px;line-height:1.05;margin:14px 0 8px;color:#211b1e}
+.auth-subtitle{color:#89797f;font-size:13px;line-height:1.5;margin:0 0 28px}
+.auth-field{margin-bottom:17px}
+.auth-field label{display:block;font-size:12px;font-weight:800;margin-bottom:8px;color:#334155}
+.auth-field input{
+  width:100%;height:51px;padding:0 14px;border-radius:12px;
+  border:1px solid #eadfe3;outline:none;color:#211b1e;background:#fff;
+  font-family:'Poppins',sans-serif;transition:.2s
+}
+.auth-field input:focus{border-color:#e68ca5;box-shadow:0 0 0 4px rgba(246,169,189,.15)}
+.auth-password{position:relative}.auth-password input{padding-right:60px}
+.auth-show{
+  position:absolute;right:8px;top:7px;height:37px;padding:0 10px;border:0;border-radius:9px;
+  background:#fff1f5;color:#b6516d;font-size:11px;font-weight:900;cursor:pointer
+}
+.auth-row{display:flex;justify-content:space-between;align-items:center;margin:1px 0 18px}
+.auth-remember{display:flex!important;align-items:center;gap:7px;font-size:11px!important;color:#817278!important;font-weight:600!important;margin:0!important}
+.auth-remember input{width:15px!important;height:15px!important;accent-color:#dd718d}
+.auth-link{border:0;background:none;color:#c05875;font-size:11px;font-weight:800;padding:0;cursor:pointer}
+.auth-primary{
+  width:100%;height:52px;border:0;border-radius:12px;background:#211b1e;color:#fff;
+  font-family:'Poppins',sans-serif;font-weight:900;cursor:pointer;transition:.2s;
+  box-shadow:0 9px 22px rgba(33,27,30,.13)
+}
+.auth-primary:hover{transform:translateY(-1px);background:#352d31}
+.auth-switch{text-align:center;color:#8b7a80;font-size:12px;margin-top:21px}
+.auth-switch button{border:0;background:none;color:#bd5571;font-weight:900;cursor:pointer}
+.auth-message{min-height:20px;text-align:center;font-size:11px;font-weight:800;margin-top:14px}
+.auth-message.error{color:#c44867}.auth-message.success{color:#3e8863}
+.auth-hidden{display:none!important}
+.auth-logged{text-align:center}
+.auth-success-icon{
+  width:62px;height:62px;border-radius:19px;margin:0 auto 22px;display:grid;place-items:center;
+  background:#f6a9bd;color:#fff;font-size:26px;font-weight:900
+}
+.auth-user-card{
+  display:flex;align-items:center;text-align:left;gap:12px;padding:14px;
+  border:1px solid #eadfe3;border-radius:15px;background:#fff8fa;margin:24px 0
+}
+.auth-avatar{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;background:#f6a9bd;color:#fff;font-weight:900}
+.auth-user-card b{font-size:12px;display:block}.auth-user-card small{font-size:10px;color:#89797f}
+.auth-welcome-line{
+  margin:12px 0 22px;padding:13px 16px;border-radius:12px;
+  background:#fff1f5;border:1px solid #f5d6df;color:#b84f6c;
+  font-size:14px;font-weight:800
+}
+@media(max-width:800px){
+  .auth-shell{grid-template-columns:1fr;min-height:auto;border-radius:24px}
+  .auth-visual{display:none}
+  .auth-form-panel{padding:35px 25px;min-height:650px}
+  .auth-mobile-logo{display:block;font-size:22px;font-weight:900;margin-bottom:35px}
+  .auth-mobile-logo span{color:#b84f6c}
+}
+@media(max-width:420px){.auth-form-panel{padding:25px 19px}.auth-box h2{font-size:29px}}
+
 </style>
 </head>
 <body>
+
+<div id="authGate">
+  <div class="auth-shell">
+    <section class="auth-visual">
+      <div class="auth-logo">BHATI <span>BATTERY</span></div>
+      <div class="auth-visual-main">
+        <div class="auth-kicker">SMART • SIMPLE • SECURE</div>
+        <h1>Power your<br><span>business.</span></h1>
+        <p>Sign in to manage battery registrations, customer records, payments and your business dashboard.</p>
+        <div class="auth-stat-row">
+          <div class="auth-stat"><b>24/7</b><small>Dashboard access</small></div>
+          <div class="auth-stat"><b>Secure</b><small>Local account</small></div>
+        </div>
+      </div>
+      <div class="auth-circle auth-c1"></div><div class="auth-circle auth-c2"></div>
+    </section>
+
+    <section class="auth-form-panel">
+      <div class="auth-box">
+        <div class="auth-mobile-logo">BHATI <span>BATTERY</span></div>
+
+        <div id="authLoginScreen">
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="bbLoginTab">Login</button>
+            <button class="auth-tab" id="bbSignupTab">Sign Up</button>
+          </div>
+
+          <span class="auth-pill" id="bbPill">WELCOME BACK</span>
+          <h2 id="bbTitle">Sign in to your account</h2>
+          <p class="auth-subtitle" id="bbSubtitle">Enter your details below to continue.</p>
+
+          <form id="bbAuthForm">
+            <div class="auth-field auth-hidden" id="bbNameField">
+              <label for="bbName">Full name</label>
+              <input id="bbName" type="text" autocomplete="name" placeholder="Your full name">
+            </div>
+
+            <div class="auth-field">
+              <label for="bbEmail">Email address</label>
+              <input id="bbEmail" type="email" autocomplete="email" placeholder="you@example.com">
+            </div>
+
+            <div class="auth-field">
+              <label for="bbPassword">Password</label>
+              <div class="auth-password">
+                <input id="bbPassword" type="password" autocomplete="current-password" placeholder="••••••••">
+                <button class="auth-show" type="button" data-target="bbPassword">Show</button>
+              </div>
+            </div>
+
+            <div class="auth-field auth-hidden" id="bbConfirmField">
+              <label for="bbConfirm">Confirm password</label>
+              <div class="auth-password">
+                <input id="bbConfirm" type="password" autocomplete="new-password" placeholder="••••••••">
+                <button class="auth-show" type="button" data-target="bbConfirm">Show</button>
+              </div>
+            </div>
+
+            <div class="auth-row" id="bbLoginOptions">
+              <label class="auth-remember"><input type="checkbox" checked> Keep me signed in</label>
+              <button class="auth-link" type="button" id="bbForgot">Forgot password?</button>
+            </div>
+
+            <button class="auth-primary" id="bbSubmit" type="submit">Sign in →</button>
+          </form>
+
+          <div class="auth-switch" id="bbSwitchText">
+            Don't have an account? <button type="button" id="bbSwitch">Create account</button>
+          </div>
+          <div class="auth-message" id="bbMessage"></div>
+        </div>
+
+        <div id="authLoggedScreen" class="auth-logged auth-hidden">
+          <div class="auth-success-icon">✓</div>
+          <span class="auth-pill">AUTHENTICATED</span>
+          <h2>Welcome, <span id="bbWelcomeName">there</span></h2>
+          <div class="auth-welcome-line">Welcome Back MOHD Faijan</div>
+          <p class="auth-subtitle">You are successfully signed in to BHATI BATTERY.</p>
+
+          <div class="auth-user-card">
+            <div class="auth-avatar" id="bbAvatar">M</div>
+            <div><b id="bbUserEmail"></b><small>Authenticated session active</small></div>
+          </div>
+
+          <button class="auth-primary" id="bbContinue">Continue to Dashboard →</button>
+          <button class="auth-primary" id="bbLogout" style="margin-top:10px;background:#fff;color:#211b1e;border:1px solid #eadfe3;box-shadow:none">Log out</button>
+          <div class="auth-message success" id="bbLoggedMessage"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
   <div class="bg-orb orb-one"></div>
   <div class="bg-orb orb-two"></div>
   <div class="bg-orb orb-three"></div>
@@ -869,5 +1064,123 @@ new Date(b.date)
 renderTable(sorted);
 }
 </script>
+
+<script>
+/* ===== BHATI BATTERY LOGIN / SIGN-UP ===== */
+(function(){
+  const usersKey = 'bhati_battery_auth_users_v1';
+  const sessionKey = 'bhati_battery_auth_session_v1';
+  let authMode = 'login';
+
+  const $ = id => document.getElementById(id);
+
+  function users(){
+    try{return JSON.parse(localStorage.getItem(usersKey)||'[]')}catch(e){return []}
+  }
+  function saveUsers(list){localStorage.setItem(usersKey,JSON.stringify(list))}
+  function hashPassword(text){
+    let h=2166136261;
+    for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}
+    return (h>>>0).toString(16);
+  }
+  const defaultUser = {name:'MOHD Faijan', email:'admin@bhatibattery.com', password:hashPassword('Bhati@123')};
+  if(!users().some(u=>u.email===defaultUser.email)) saveUsers([defaultUser,...users()]);
+  function msg(text,type=''){
+    $('bbMessage').textContent=text;
+    $('bbMessage').className='auth-message'+(type?' '+type:'');
+  }
+  function setMode(next){
+    authMode=next;
+    const signup=next==='signup';
+    $('bbLoginTab').classList.toggle('active',!signup);
+    $('bbSignupTab').classList.toggle('active',signup);
+    $('bbPill').textContent=signup?'GET STARTED':'WELCOME BACK';
+    $('bbTitle').textContent=signup?'Create your account':'Sign in to your account';
+    $('bbSubtitle').textContent=signup?'Create your secure account in a few seconds.':'Enter your details below to continue.';
+    $('bbNameField').classList.toggle('auth-hidden',!signup);
+    $('bbConfirmField').classList.toggle('auth-hidden',!signup);
+    $('bbLoginOptions').classList.toggle('auth-hidden',signup);
+    $('bbSubmit').textContent=signup?'Create account →':'Sign in →';
+    $('bbSwitchText').innerHTML=signup
+      ? 'Already have an account? <button type="button" id="bbSwitch">Sign in</button>'
+      : 'Don\\'t have an account? <button type="button" id="bbSwitch">Create account</button>';
+    $('bbSwitch').onclick=()=>setMode(authMode==='login'?'signup':'login');
+    msg('');
+  }
+  function showLogged(user){
+    $('authLoginScreen').classList.add('auth-hidden');
+    $('authLoggedScreen').classList.remove('auth-hidden');
+    $('bbWelcomeName').textContent=(user.name||'there').split(' ')[0];
+    $('bbUserEmail').textContent=user.email;
+    $('bbAvatar').textContent=(user.name||'M').charAt(0).toUpperCase();
+  }
+  function showLogin(){
+    $('authLoggedScreen').classList.add('auth-hidden');
+    $('authLoginScreen').classList.remove('auth-hidden');
+    $('bbAuthForm').reset();
+    setMode('login');
+  }
+
+  $('bbLoginTab').onclick=()=>setMode('login');
+  $('bbSignupTab').onclick=()=>setMode('signup');
+
+  document.querySelectorAll('#authGate .auth-show').forEach(btn=>{
+    btn.onclick=()=>{
+      const input=$(btn.dataset.target);
+      input.type=input.type==='password'?'text':'password';
+      btn.textContent=input.type==='password'?'Show':'Hide';
+    };
+  });
+
+  $('bbAuthForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    msg('');
+    const name=$('bbName').value.trim();
+    const email=$('bbEmail').value.trim().toLowerCase();
+    const password=$('bbPassword').value;
+    const confirm=$('bbConfirm').value;
+
+    if(authMode==='signup' && name.length<2){msg('Please enter your full name.','error');$('bbName').focus();return}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg('Please enter a valid email address.','error');$('bbEmail').focus();return}
+    if(password.length<8){msg('Password must contain at least 8 characters.','error');$('bbPassword').focus();return}
+    if(authMode==='signup' && password!==confirm){msg('Passwords do not match.','error');$('bbConfirm').focus();return}
+
+    const list=users();
+    if(authMode==='signup'){
+      if(list.some(u=>u.email===email)){msg('An account with this email already exists.','error');return}
+      const user={name:name,email:email,password:hashPassword(password)};
+      list.push(user);saveUsers(list);
+      localStorage.setItem(sessionKey,JSON.stringify({name:user.name,email:user.email}));
+      showLogged(user);
+    }else{
+      const user=list.find(u=>u.email===email && u.password===hashPassword(password));
+      if(!user){msg('Incorrect email or password.','error');return}
+      localStorage.setItem(sessionKey,JSON.stringify({name:user.name,email:user.email}));
+      showLogged(user);
+    }
+  });
+
+  $('bbForgot').onclick=()=>{
+    msg('Password reset requires an email service; this page uses local browser authentication.','error');
+  };
+
+  $('bbContinue').onclick=()=>{
+    $('authGate').style.display='none';
+    try{showToast('Welcome Back MOHD Faijan');}catch(e){}
+  };
+
+  $('bbLogout').onclick=()=>{
+    localStorage.removeItem(sessionKey);
+    $('authGate').style.display='flex';
+    showLogin();
+  };
+
+  try{
+    const session=JSON.parse(localStorage.getItem(sessionKey)||'null');
+    if(session && session.email) showLogged(session);
+  }catch(e){}
+})();
+</script>
+
 </body>
 </html>
