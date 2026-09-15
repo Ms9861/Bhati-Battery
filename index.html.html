@@ -1067,122 +1067,146 @@ renderTable(sorted);
 
 <script>
 /* ===== BHATI BATTERY LOGIN / SIGN-UP ===== */
-(function(){
-  const usersKey = 'bhati_battery_auth_users_v1';
-  const sessionKey = 'bhati_battery_auth_session_v1';
-  let authMode = 'login';
+(function () {
+  'use strict';
 
-  const $ = id => document.getElementById(id);
+  const DEFAULT_ID = 'admin@bhatibattery.com';
+  const DEFAULT_PASSWORD = 'Bhati@123';
 
-  function users(){
-    try{return JSON.parse(localStorage.getItem(usersKey)||'[]')}catch(e){return []}
-  }
-  function saveUsers(list){localStorage.setItem(usersKey,JSON.stringify(list))}
-  function hashPassword(text){
-    let h=2166136261;
-    for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}
-    return (h>>>0).toString(16);
-  }
-  
-  {
-    const current=users();
-    const withoutDefault=current.filter(u=>u.email!==defaultUser.email);
-    saveUsers([defaultUser,...withoutDefault]);
-  }
-  function msg(text,type=''){
-    $('bbMessage').textContent=text;
-    $('bbMessage').className='auth-message'+(type?' '+type:'');
-  }
-  function setMode(next){
-    authMode=next;
-    const signup=next==='signup';
-    $('bbLoginTab').classList.toggle('active',!signup);
-    $('bbSignupTab').classList.toggle('active',signup);
-    $('bbPill').textContent=signup?'GET STARTED':'WELCOME BACK';
-    $('bbTitle').textContent=signup?'Create your account':'Sign in to your account';
-    $('bbSubtitle').textContent=signup?'Create your secure account in a few seconds.':'Enter your details below to continue.';
-    $('bbNameField').classList.toggle('auth-hidden',!signup);
-    $('bbConfirmField').classList.toggle('auth-hidden',!signup);
-    $('bbLoginOptions').classList.toggle('auth-hidden',signup);
-    $('bbSubmit').textContent=signup?'Create account →':'Sign in →';
-    $('bbSwitchText').innerHTML=signup
-      ? 'Already have an account? <button type="button" id="bbSwitch">Sign in</button>'
-      : 'Don\'t have an account? <button type="button" id="bbSwitch">Create account</button>';
-    $('bbSwitch').onclick=()=>setMode(authMode==='login'?'signup':'login');
-    msg('');
-  }
-  function showLogged(user){
-    $('authLoginScreen').classList.add('auth-hidden');
-    $('authLoggedScreen').classList.remove('auth-hidden');
-    $('bbWelcomeName').textContent=(user.name||'there').split(' ')[0];
-    $('bbUserEmail').textContent=user.email;
-    $('bbAvatar').textContent=(user.name||'M').charAt(0).toUpperCase();
-  }
-  function showLogin(){
-    $('authLoggedScreen').classList.add('auth-hidden');
-    $('authLoginScreen').classList.remove('auth-hidden');
-    $('bbAuthForm').reset();
+  function byId(id) { return document.getElementById(id); }
+  function showLogin() {
+    byId('authLoggedScreen').classList.add('auth-hidden');
+    byId('authLoginScreen').classList.remove('auth-hidden');
+    byId('bbAuthForm').reset();
     setMode('login');
   }
 
-  $('bbLoginTab').onclick=()=>setMode('login');
-  $('bbSignupTab').onclick=()=>setMode('signup');
+  function setMode(mode) {
+    const signup = mode === 'signup';
+    byId('bbLoginTab').classList.toggle('active', !signup);
+    byId('bbSignupTab').classList.toggle('active', signup);
+    byId('bbPill').textContent = signup ? 'GET STARTED' : 'WELCOME BACK';
+    byId('bbTitle').textContent = signup ? 'Create your account' : 'Sign in to your account';
+    byId('bbSubtitle').textContent = signup
+      ? 'Create your account in a few seconds.'
+      : 'Enter your details below to continue.';
+    byId('bbNameField').classList.toggle('auth-hidden', !signup);
+    byId('bbConfirmField').classList.toggle('auth-hidden', !signup);
+    byId('bbLoginOptions').classList.toggle('auth-hidden', signup);
+    byId('bbSubmit').textContent = signup ? 'Create account →' : 'Sign in →';
 
-  document.querySelectorAll('#authGate .auth-show').forEach(btn=>{
-    btn.onclick=()=>{
-      const input=$(btn.dataset.target);
-      input.type=input.type==='password'?'text':'password';
-      btn.textContent=input.type==='password'?'Show':'Hide';
+    byId('bbSwitchText').innerHTML = signup
+      ? 'Already have an account? <button type="button" id="bbSwitch">Sign in</button>'
+      : 'Don\'t have an account? <button type="button" id="bbSwitch">Create account</button>';
+
+    byId('bbSwitch').onclick = function () {
+      setMode(signup ? 'login' : 'signup');
     };
-  });
+    byId('bbMessage').textContent = '';
+    byId('bbMessage').className = 'auth-message';
+  }
 
-  $('bbAuthForm').addEventListener('submit',function(e){
-    e.preventDefault();
-    msg('');
-    const name=$('bbName').value.trim();
-    const email=$('bbEmail').value.trim().toLowerCase();
-    const password=$('bbPassword').value;
-    const confirm=$('bbConfirm').value;
+  function showLogged(email, name) {
+    byId('authLoginScreen').classList.add('auth-hidden');
+    byId('authLoggedScreen').classList.remove('auth-hidden');
+    byId('bbWelcomeName').textContent = name.split(' ')[0];
+    byId('bbUserEmail').textContent = email;
+    byId('bbAvatar').textContent = name.charAt(0).toUpperCase();
+  }
 
-    if(authMode==='signup' && name.length<2){msg('Please enter your full name.','error');$('bbName').focus();return}
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg('Please enter a valid email address.','error');$('bbEmail').focus();return}
-    if(password.length<8){msg('Password must contain at least 8 characters.','error');$('bbPassword').focus();return}
-    if(authMode==='signup' && password!==confirm){msg('Passwords do not match.','error');$('bbConfirm').focus();return}
+  function login() {
+    const email = byId('bbEmail').value.trim().toLowerCase();
+    const password = byId('bbPassword').value;
 
-    const list=users();
-    if(authMode==='signup'){
-      if(list.some(u=>u.email===email)){msg('An account with this email already exists.','error');return}
-      const user={name:name,email:email,password:hashPassword(password)};
-      list.push(user);saveUsers(list);
-      localStorage.setItem(sessionKey,JSON.stringify({name:user.name,email:user.email}));
-      showLogged(user);
-    }else{
-      const user=list.find(u=>u.email===email && u.password===hashPassword(password));
-      if(!user){msg('Incorrect email or password.','error');return}
-      localStorage.setItem(sessionKey,JSON.stringify({name:user.name,email:user.email}));
-      showLogged(user);
+    if (email === DEFAULT_ID && password === DEFAULT_PASSWORD) {
+      localStorage.setItem('bhati_battery_session', '1');
+      showLogged(DEFAULT_ID, 'MOHD Faijan');
+      return;
+    }
+
+    byId('bbMessage').textContent = 'Incorrect ID or password.';
+    byId('bbMessage').className = 'auth-message error';
+  }
+
+  function continueToDashboard() {
+    byId('authGate').style.display = 'none';
+    try {
+      if (typeof showToast === 'function') showToast('Welcome Back MOHD Faijan');
+    } catch (e) {}
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    byId('bbLoginTab').onclick = function () { setMode('login'); };
+    byId('bbSignupTab').onclick = function () { setMode('signup'); };
+
+    document.querySelectorAll('#authGate .auth-show').forEach(function (btn) {
+      btn.onclick = function () {
+        const input = byId(btn.dataset.target);
+        input.type = input.type === 'password' ? 'text' : 'password';
+        btn.textContent = input.type === 'password' ? 'Show' : 'Hide';
+      };
+    });
+
+    byId('bbAuthForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (byId('bbSignupTab').classList.contains('active')) {
+        const name = byId('bbName').value.trim();
+        const email = byId('bbEmail').value.trim().toLowerCase();
+        const password = byId('bbPassword').value;
+        const confirm = byId('bbConfirm').value;
+
+        if (name.length < 2) {
+          byId('bbMessage').textContent = 'Please enter your full name.';
+          byId('bbMessage').className = 'auth-message error';
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          byId('bbMessage').textContent = 'Please enter a valid email address.';
+          byId('bbMessage').className = 'auth-message error';
+          return;
+        }
+        if (password.length < 8) {
+          byId('bbMessage').textContent = 'Password must contain at least 8 characters.';
+          byId('bbMessage').className = 'auth-message error';
+          return;
+        }
+        if (password !== confirm) {
+          byId('bbMessage').textContent = 'Passwords do not match.';
+          byId('bbMessage').className = 'auth-message error';
+          return;
+        }
+
+        localStorage.setItem('bhati_battery_custom_user', JSON.stringify({
+          name: name, email: email, password: password
+        }));
+        localStorage.setItem('bhati_battery_session', '1');
+        showLogged(email, name);
+        return;
+      }
+
+      login();
+    });
+
+    byId('bbContinue').onclick = continueToDashboard;
+
+    byId('bbLogout').onclick = function () {
+      localStorage.removeItem('bhati_battery_session');
+      byId('authGate').style.display = 'flex';
+      showLogin();
+    };
+
+    byId('bbForgot').onclick = function () {
+      byId('bbMessage').textContent = 'Default login: admin@bhatibattery.com / Bhati@123';
+      byId('bbMessage').className = 'auth-message success';
+    };
+
+    setMode('login');
+
+    if (localStorage.getItem('bhati_battery_session') === '1') {
+      showLogged(DEFAULT_ID, 'MOHD Faijan');
     }
   });
-
-  $('bbForgot').onclick=()=>{
-    msg('Password reset requires an email service; this page uses local browser authentication.','error');
-  };
-
-  $('bbContinue').onclick=()=>{
-    $('authGate').style.display='none';
-    try{showToast('Welcome Back MOHD FAIJAN');}catch(e){}
-  };
-
-  $('bbLogout').onclick=()=>{
-    localStorage.removeItem(sessionKey);
-    $('authGate').style.display='flex';
-    showLogin();
-  };
-
-  try{
-    const session=JSON.parse(localStorage.getItem(sessionKey)||'null');
-    if(session && session.email) showLogged(session);
-  }catch(e){}
 })();
 </script>
 
