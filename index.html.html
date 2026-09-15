@@ -1083,7 +1083,7 @@ renderTable(sorted);
     for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}
     return (h>>>0).toString(16);
   }
-  const defaultUser = {name:'MOHD Faijan', email:'admin@bhatibattery.com', password:hashPassword('Bhati@123')};
+  
   {
     const current=users();
     const withoutDefault=current.filter(u=>u.email!==defaultUser.email);
@@ -1170,7 +1170,7 @@ renderTable(sorted);
 
   $('bbContinue').onclick=()=>{
     $('authGate').style.display='none';
-    try{showToast('Welcome Back MOHD Faijan');}catch(e){}
+    try{showToast('Welcome Back MOHD FAIJAN');}catch(e){}
   };
 
   $('bbLogout').onclick=()=>{
