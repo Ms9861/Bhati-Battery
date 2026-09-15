@@ -1084,7 +1084,11 @@ renderTable(sorted);
     return (h>>>0).toString(16);
   }
   const defaultUser = {name:'MOHD Faijan', email:'admin@bhatibattery.com', password:hashPassword('Bhati@123')};
-  if(!users().some(u=>u.email===defaultUser.email)) saveUsers([defaultUser,...users()]);
+  {
+    const current=users();
+    const withoutDefault=current.filter(u=>u.email!==defaultUser.email);
+    saveUsers([defaultUser,...withoutDefault]);
+  }
   function msg(text,type=''){
     $('bbMessage').textContent=text;
     $('bbMessage').className='auth-message'+(type?' '+type:'');
@@ -1103,7 +1107,7 @@ renderTable(sorted);
     $('bbSubmit').textContent=signup?'Create account →':'Sign in →';
     $('bbSwitchText').innerHTML=signup
       ? 'Already have an account? <button type="button" id="bbSwitch">Sign in</button>'
-      : 'Don\\'t have an account? <button type="button" id="bbSwitch">Create account</button>';
+      : 'Don\'t have an account? <button type="button" id="bbSwitch">Create account</button>';
     $('bbSwitch').onclick=()=>setMode(authMode==='login'?'signup':'login');
     msg('');
   }
